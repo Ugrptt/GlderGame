@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Telegram Oyun</title>
+    <style>
+        /* Genel ayarlar */
+        body {
+            margin: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            background-color: white;
+            height: 100vh;
+            overflow: hidden;
+        }
+        /* Puan alanı */
+        #score {
+            font-size: 24px;
+            font-weight: bold;
+            color: black;
+            margin-top: 10px;
+        }
+        /* Logo ayarları */
+        #logo {
+            max-width: 80%;
+            max-height: 50%;
+            margin: 20px 0;
+        }
+        /* İçerik alanı */
+        .content-section {
+            display: none;
+            flex: 1;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            width: 100%;
+        }
+        .content-section.active {
+            display: flex;
+            flex-direction: column;
+        }
+        /* Butonların sabit olması */
+        .button-container {
+            display: flex;
+            justify-content: space-around;
+            width: 100%;
+            padding: 10px 0;
+            position: fixed;
+            bottom: 0;
+            background-color: white;
+            border-top: 1px solid #ccc;
+        }
+        .button-container img {
+            width: 50px;
+            height: 50px;
+            cursor: pointer;
+        }
+        /* Sosyal medya butonları */
+        .social-buttons {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            width: 80%;
+            margin-top: 20px;
+        }
+        .social-buttons a {
+            text-decoration: none;
+            color: black;
+            margin-bottom: 20px;
+            text-align: center;
+            width: 100%;
+        }
+        .social-buttons .button-wrapper {
+            display: flex;
+            align-items: center;
+            background-color: #f7f7f7;
+            padding: 10px;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            width: 100%;
+        }
+        .social-buttons img {
+            width: 60px;
+            height: 60px;
+            margin-right: 15px;
+        }
+        .reward-text {
+            font-size: 16px;
+            font-weight: bold;
+            color: green;
+        }
+        .platform-name {
+            font-size: 18px;
+            font-weight: bold;
+            color: #333;
+        }
+    </style>
+</head>
+<body>
+    <!-- Sadece Anasayfada Görünecek Puan Gösterimi -->
+    <div id="score">GLDER: 0</div>
+
+    <!-- Ortada Logo -->
+    <img src="logo.png" id="logo" alt="Logo">
+
+    <!-- İçerik Bölümleri -->
+    <div id="homeSection" class="content-section active">Anasayfa İçeriği</div>
+    <div id="friendsSection" class="content-section">
+        <h2>Arkadaşlar İçeriği</h2>
+        <div id="referralLinkContainer">
+            <p>Referral Linkinizi paylaşın:</p>
+            <input type="text" id="referralLink" value="" readonly>
+            <button onclick="copyReferralLink()">Kopyala</button>
+        </div>
+        <h3>Arkadaşlarınız:</h3>
+        <div id="friendsList"></div>
+    </div>
+    <div id="leaderboardSection" class="content-section">Liderlik Tablosu İçeriği</div>
+    <div id="earnSection" class="content-section">
+        <h2>Sosyal Medya Takip</h2>
+        <div class="social-buttons">
+            <a href="https://www.youtube.com/channel/YourChannelID" target="_blank" onclick="earnPoints('youtube', 1500)">
+                <div class="button-wrapper" id="youtube">
+                    <img src="youtube.png" alt="YouTube">
+                    <div>
+                        <div class="platform-name">YouTube</div>
+                        <div class="reward-text">+1500 GLDER</div>
+                    </div>
+                </div>
+            </a>
+            <a href="https://t.me/YourTelegramChannel" target="_blank" onclick="earnPoints('telegram', 2000)">
+                <div class="button-wrapper" id="telegram">
+                    <img src="telegram.png" alt="Telegram">
+                    <div>
+                        <div class="platform-name">Telegram</div>
+                        <div class="reward-text">+2000 GLDER</div>
+                    </div>
+                </div>
+            </a>
+            <a href="https://twitter.com/YourTwitterHandle" target="_blank" onclick="earnPoints('twitter', 1200)">
+                <div class="button-wrapper" id="twitter">
+                    <img src="twitter.png" alt="Twitter">
+                    <div>
+                        <div class="platform-name">Twitter</div>
+                        <div class="reward-text">+1200 GLDER</div>
+                    </div>
+                </div>
+            </a>
+            <a href="https://www.instagram.com/YourInstagramHandle" target="_blank" onclick="earnPoints('instagram', 1000)">
+                <div class="button-wrapper" id="instagram">
+                    <img src="instagram.png" alt="Instagram">
+                    <div>
+                        <div class="platform-name">Instagram</div>
+                        <div class="reward-text">+1000 GLDER</div>
+                    </div>
+                </div>
+            </a>
+        </div>
+    </div>
+
+    <!-- Sabit Butonlar -->
+    <div class="button-container">
+        <img src="home.png" alt="Home" onclick="showSection('homeSection')">
+        <img src="friends.png" alt="Friends" onclick="showSection('friendsSection')">
+        <img src="leaderboard.png" alt="Leaderboard" onclick="showSection('leaderboardSection')">
+        <img src="earn.png" alt="Earn" onclick="showSection('earnSection')">
+    </div>
+
+    <!-- JavaScript ile Bölüm Geçişi ve Puan Sistemi -->
+    <script>
+        // Puanı ve görevleri yükle
+        let currentScore = parseInt(localStorage.getItem('glderScore')) || 0;
+        const completedTasks = JSON.parse(localStorage.getItem('completedTasks')) || {};
+
+        document.getElementById('score').innerText = `GLDER: ${currentScore}`;
+
+        function showSection(sectionId) {
+            const sections = document.querySelectorAll('.content-section');
+            sections.forEach(section => section.classList.remove('active'));
+
+            const activeSection = document.getElementById(sectionId);
+            activeSection.classList.add('active');
+
+            const logo = document.getElementById('logo');
+            logo.style.display = sectionId === 'homeSection' ? 'block' : 'none';
+
+            const scoreDisplay = document.getElementById('score');
+            scoreDisplay.style.display = sectionId === 'homeSection' ? 'block' : 'none';
+        }
+
+        function earnPoints(taskId, points) {
+            if (!completedTasks[taskId]) {
+                currentScore += points;
+                completedTasks[taskId] = true;
+
+                document.getElementById('score').innerText = `GLDER: ${currentScore}`;
+                localStorage.setItem('glderScore', currentScore);
+                localStorage.setItem('completedTasks', JSON.stringify(completedTasks));
+
+                // Görev tamamlandığında görev butonunu pasifleştir
+                document.getElementById(taskId).style.opacity = '0.5';
+                document.getElementById(taskId).style.pointerEvents = 'none';
+            }
+        }
+
+        // Yüklenirken tamamlanmış görevlerin görünümünü güncelle
+        Object.keys(completedTasks).forEach(taskId => {
+            if (completedTasks[taskId]) {
+                const taskElement = document.getElementById(taskId);
+                if (taskElement) {
+                    taskElement.style.opacity = '0.5';
+                    taskElement.style.pointerEvents = 'none';
+                }
+            }
+        });
+
+        // Kullanıcı referans linkini oluştur
+        const userId = 'user_' + Math.random().toString(36).substr(2, 9); // Benzersiz kullanıcı ID'si oluştur
+        const friendsLink = `https://t.me/your_bot?start=${userId}`; // Kullanıcıyı arkadaş sayfasına yönlendirin
+        
+        // Referral linkini ayarla
+        const referralLinkInput = document.getElementById('referralLink');
+        referralLinkInput.value = friendsLink;
+
+        // Referral linkini kopyalamak için fonksiyon
+        function copyReferralLink() {
+            const referralLinkInput = document.getElementById('referralLink');
+            referralLinkInput.select();
+            document.execCommand('copy');
+            alert('Referans bağlantınız kopyalandı: ' + referralLinkInput.value);
+        }
+    </script>
+</body>
+</html>
