@@ -89,7 +89,7 @@ function displayInviteLink() {
 
   // Kullanıcıya özel davet linkini oluştur
   const inviteLink = `https://t.me/GlderGame_bot?start=${username}`; // Kullanıcı adı ile birlikte link oluştur
-  document.getElementById('invite-link').value = inviteLink;
+  document.getElementById('invite-link').value = inviteLink; // Oyuncu için davet linkini ayarla
 }
 
 // Diğer fonksiyonlar...
