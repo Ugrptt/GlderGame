@@ -87,7 +87,7 @@ function displayInviteLink() {
   // Kullanıcı adını sayfada göster
   document.getElementById('username').innerText = username;
 
-  const inviteLink = `https://t.me/ugrcoin_bot/ugrcoin?ref=${username}`;
+  const inviteLink = `https://t.me/GlderGame_bot/GGame?ref=${username}`;
   document.getElementById('invite-link').value = inviteLink;
 }
 
