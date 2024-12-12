@@ -1,4 +1,5 @@
 let currentScore = 0; // Başlangıç puanı
+const gameLink = 'https://t.me/GlderGame_bot/GGame'; // Oyun linkini burada tanımlayın
 
 // Sayfa yüklendiğinde Home sayfasını göster
 window.onload = function() {
@@ -31,7 +32,6 @@ function navigateTo(pageId) {
   }
 }
 
-
 function earnPoints(points, taskId) {
   const taskElement = document.getElementById(taskId);
   const lastCompletionTime = localStorage.getItem(taskId);
@@ -39,7 +39,7 @@ function earnPoints(points, taskId) {
 
   if (lastCompletionTime && (currentTime - lastCompletionTime < 24 * 60 * 60 * 1000)) {
     const remainingTime = 24 * 60 * 60 * 1000 - (currentTime - lastCompletionTime);
-    alert(`To complete this task ${Math.ceil(remainingTime / (60 * 1000))} Wait a minute.`);
+    alert(`Bu görevi tamamlamak için ${Math.ceil(remainingTime / (60 * 1000))} dakika bekleyin.`);
     return;
   }
 
@@ -79,22 +79,20 @@ function displayInviteLink() {
   const tg = window.Telegram.WebApp;
   const user = tg.initDataUnsafe.user;
 
-  // Kullanıcı bilgilerini al
   let username = "Kullanıcı";
-  let userId = user.id; // Kullanıcının Telegram ID'si
-
-  if (user && (user.username || user.first_name)) {
+  let userId = ""; // Kullanıcı ID'sini tanımla
+  if (user) {
       username = user.username || `${user.first_name} ${user.last_name || ''}`;
+      userId = user.id; // Kullanıcı ID'sini al
   }
 
   // Kullanıcı adını sayfada göster
   document.getElementById('username').innerText = username;
 
-  // Davet bağlantısını oluştur
-  const inviteLink = `https://t.me/GlderGame_bot/GGame?ref=${userId}`; // ID'yi referans olarak ekle
-  document.getElementById('invite-link').value = inviteLink;
+  // Kullanıcıya özel davet linkini oluştur
+  const inviteLink = `${gameLink}?ref=${username}&id=${userId}`;
+  document.getElementById('invite-link').value = inviteLink; // Oyuncu için davet linkini ayarla
 }
-
 
 function copyInviteLink() {
   const inviteLink = document.getElementById('invite-link');
@@ -115,7 +113,7 @@ function onFriendInvited(friendUsername) {
   currentScore += 1000;
   saveScore(); // Yeni puanı kaydet
   updateScoreDisplay();
-  showNotification(`${friendUsername} joined the game! You've earned 1000 points!`);
+  showNotification(`${friendUsername} oyuna katıldı! 1000 puan kazandınız!`);
 }
 
 function showNotification(message) {
