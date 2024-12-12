@@ -80,19 +80,20 @@ function displayInviteLink() {
   const user = tg.initDataUnsafe.user;
 
   let username = "Kullanıcı";
-  let userId = ""; // Kullanıcı ID'sini tanımla
-  if (user) {
+  if (user && (user.username || user.first_name)) {
       username = user.username || `${user.first_name} ${user.last_name || ''}`;
-      userId = user.id; // Kullanıcı ID'sini al
   }
 
   // Kullanıcı adını sayfada göster
   document.getElementById('username').innerText = username;
 
   // Kullanıcıya özel davet linkini oluştur
-  const inviteLink = `${gameLink}?ref=${username}&id=${userId}`;
-  document.getElementById('invite-link').value = inviteLink; // Oyuncu için davet linkini ayarla
+  const inviteLink = `https://t.me/GlderGame_bot?start=${username}`; // Kullanıcı adı ile birlikte link oluştur
+  document.getElementById('invite-link').value = inviteLink;
 }
+
+// Diğer fonksiyonlar...
+
 
 function copyInviteLink() {
   const inviteLink = document.getElementById('invite-link');
