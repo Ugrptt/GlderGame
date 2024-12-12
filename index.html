@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Mobil HTML5 Oyun</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <!-- Renk değiştiren arka plan -->
+  <div class="background"></div>
+
+  <div id="notification" class="notification hidden"></div>
+  
+  <!-- Sayfalar -->
+  <div id="home-page" class="page active">
+    <div class="center-logo">
+      <div class="light-ring"></div>
+      <img src="logo.png" alt="Logo">
+    </div>
+
+    <div class="top-left-icon">
+      <img src="bro.png" alt="Bro Icon">
+      <span id="username" class="username-display">Loading...</span>
+    </div>
+
+    <div class="top-right-token">
+      <div class="score-container">
+        <img src="token.png" alt="Token" class="token-icon">
+        <span class="score-text" id="score-text">1K</span>
+      </div>
+    </div>
+  </div>
+
+  <div id="friends-page" class="page hidden">
+    <h1>Invite Your Friends!</h1>
+    <p>Send your friends the link below and get 1000 points!</p>
+    <div class="invite-link-container">
+      <input type="text" id="invite-link" value="" readonly>
+      <button onclick="copyInviteLink()">Copy</button>
+    </div>
+    <h2>Invitations:</h2>
+    <ul id="friends-list" class="friends-list"></ul>
+  </div>
+
+  <div id="earn-page" class="page hidden">
+    <img src="coin.png" alt="Coin" class="rotating-coin">
+    <div class="task-container">
+        <div class="task" id="telegram-task">
+            <img src="telegram.png" alt="Telegram Görevi" class="task-icon">
+            <p>Telegram Quest (10K Points)</p>
+            <button onclick="earnPoints(10000, 'telegram-task')">Completed</button>
+            <img src="confetti.png" alt="Confetti" class="confetti-icon hidden">
+            <a href="https://t.me/coin_moin2" target="_blank" class="task-link">Telegram Follow</a>
+        </div>
+        <div class="task" id="twitter-task">
+            <img src="twitter.png" alt="Twitter Görevi" class="task-icon">
+            <p>Twitter Quest (10K Points)</p>
+            <button onclick="earnPoints(10000, 'twitter-task')">Completed</button>
+            <img src="confetti.png" alt="Confetti" class="confetti-icon hidden">
+            <a href="https://x.com/Gldertoken?t=AOMo6J7zgEO-mtxo94_dHw&s=09" target="_blank" class="task-link">Twitter Follow</a>
+        </div>
+        <div class="task" id="instagram-task">
+            <img src="instagram.png" alt="Instagram Görevi" class="task-icon">
+            <p>Instagram Quest (10K Points)</p>
+            <button onclick="earnPoints(10000, 'instagram-task')">Completed</button>
+            <img src="confetti.png" alt="Confetti" class="confetti-icon hidden">
+            <a href="https://www.instagram.com/glderofficialcommunity?igsh=OGIybmI5cHQ0MTd6" target="_blank" class="task-link">Instagram Follow</a>
+        </div>
+        <div class="task" id="youtube-task">
+            <img src="youtube.png" alt="YouTube Görevi" class="task-icon">
+            <p>YouTube Quest (10K Points)</p>
+            <button onclick="earnPoints(10000, 'youtube-task')">Completed</button>
+            <img src="confetti.png" alt="Confetti" class="confetti-icon hidden">
+            <a href="https://youtube.com/@geleceginliderleri23?si=IYISl4c2QXQKusUz" target="_blank" class="task-link">YouTube Follow</a>
+        </div>
+    </div>
+</div>
+
+
+  <!-- Alt Butonlar -->
+  <div class="bottom-buttons">
+    <button onclick="navigateTo('home-page')">
+      <img src="home.png" alt="Home" class="button">
+    </button>
+    <button onclick="navigateTo('friends-page')">
+      <img src="friends.png" alt="Friends" class="button">
+    </button>
+    <button onclick="navigateTo('earn-page')">
+      <img src="earn.png" alt="Earn" class="button">
+    </button>
+  </div>
+
+  <script src="https://telegram.org/js/telegram-web-app.js"></script>
+  <script src="script.js"></script>
+</body>
+</html>
