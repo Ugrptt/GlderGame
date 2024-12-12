@@ -81,12 +81,16 @@ function displayInviteLink() {
 
   let username = "Kullanıcı";
   if (user && (user.username || user.first_name)) {
-    username = user.username || `${user.first_name} ${user.last_name || ''}`;
+      username = user.username || `${user.first_name} ${user.last_name || ''}`;
   }
 
-  const inviteLink = `https://t.me/GlderGame_bot/GGame?ref=${username}`;
+  // Kullanıcı adını sayfada göster
+  document.getElementById('username').innerText = username;
+
+  const inviteLink = `https://t.me/ugrcoin_bot/ugrcoin?ref=${username}`;
   document.getElementById('invite-link').value = inviteLink;
 }
+
 
 function copyInviteLink() {
   const inviteLink = document.getElementById('invite-link');
