@@ -84,7 +84,7 @@ function displayInviteLink() {
     username = user.username || `${user.first_name} ${user.last_name || ''}`;
   }
 
-  const inviteLink = `https://t.me/ugrcoin_bot/ugrcoin?ref=${username}`;
+  const inviteLink = `https://t.me/GlderGame_bot/GGame?ref=${username}`;
   document.getElementById('invite-link').value = inviteLink;
 }
 
