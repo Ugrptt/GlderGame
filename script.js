@@ -79,7 +79,10 @@ function displayInviteLink() {
   const tg = window.Telegram.WebApp;
   const user = tg.initDataUnsafe.user;
 
+  // Kullanıcı bilgilerini al
   let username = "Kullanıcı";
+  let userId = user.id; // Kullanıcının Telegram ID'si
+
   if (user && (user.username || user.first_name)) {
       username = user.username || `${user.first_name} ${user.last_name || ''}`;
   }
@@ -87,7 +90,8 @@ function displayInviteLink() {
   // Kullanıcı adını sayfada göster
   document.getElementById('username').innerText = username;
 
-  const inviteLink = `https://t.me/GlderGame_bot/GGame?ref=${username}`;
+  // Davet bağlantısını oluştur
+  const inviteLink = `https://t.me/GlderGame_bot/GGame?ref=${userId}`; // ID'yi referans olarak ekle
   document.getElementById('invite-link').value = inviteLink;
 }
 
